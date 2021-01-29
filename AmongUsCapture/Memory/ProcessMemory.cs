@@ -42,6 +42,8 @@ namespace AmongUsCapture
         public abstract string ReadString(IntPtr address, int lengthOffset = 0x8, int rawOffset = 0xC);
         public abstract IntPtr[] ReadArray(IntPtr address, int size);
 
+        public abstract bool Write<T>(T value, IntPtr address, params int[] offsets) where T : unmanaged;
+
         public class Module
         {
             public IntPtr BaseAddress { get; set; }

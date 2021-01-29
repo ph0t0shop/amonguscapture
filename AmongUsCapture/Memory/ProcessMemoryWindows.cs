@@ -66,6 +66,28 @@ namespace AmongUsCapture
             }
         }
 
+        public override bool Write<T>(T value, IntPtr address, params int[] offsets) // returns true if the write was successful, false otherwise
+        {
+            if (process == null || address == IntPtr.Zero)
+                return false;
+
+            int last = OffsetAddress(ref address, offsets);
+            if (address == IntPtr.Zero)
+                return false;
+
+            unsafe
+            {
+                int size = sizeof(T);
+                if (typeof(T) == typeof(IntPtr)) size = is64Bit ? 8 : 4;
+                byte[] buffer = new byte[size];
+                fixed (byte* ptr = buffer)
+                {
+                    *(T*)ptr = value;
+                }
+                return WinAPI.WriteProcessMemory(process.Handle, address, buffer, size, out IntPtr bytesRead);
+            }
+        }
+
         public override T Read<T>(IntPtr address, params int[] offsets)
         {
             return ReadWithDefault<T>(address, default, offsets);
@@ -138,6 +160,14 @@ namespace AmongUsCapture
         }
         private static class WinAPI
         {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            public static extern bool WriteProcessMemory(
+            IntPtr hProcess,
+            IntPtr lpBaseAddress,
+            byte[] lpBuffer,
+            Int32 nSize,
+            out IntPtr lpNumberOfBytesWritten);
+
             [DllImport("kernel32.dll", SetLastError = true)]
             public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out int lpNumberOfBytesRead);
             [DllImport("kernel32.dll", SetLastError = true)]

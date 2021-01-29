@@ -278,6 +278,11 @@ namespace AmongUsCapture
             return buffer;
         }
 
+        public override bool Write<T>(T value, IntPtr address, params int[] offsets)
+        {
+            throw new NotImplementedException();
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         private struct iovec
         {
