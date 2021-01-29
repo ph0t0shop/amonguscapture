@@ -27,7 +27,12 @@ namespace AmongUsCapture.Memory.Structs
 
         public string GetPlayerName()
         {
-            return ProcessMemory.getInstance().ReadString((IntPtr)this.PlayerName);
+            return ProcessMemory.getInstance().ReadString((IntPtr)this.PlayerName, 0x10, 0x14);
+        }
+
+        public bool GetIsImposter()
+        {
+            return this.IsImpostor == 1;
         }
 
         public PlayerColor GetPlayerColor()

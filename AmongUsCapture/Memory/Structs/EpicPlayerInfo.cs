@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace AmongUsCapture.Memory.Structs
 {
     [System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
-    public struct EpicPlayerInfo : PlayerInfo
+    struct EpicPlayerInfo : PlayerInfo
     {
         [System.Runtime.InteropServices.FieldOffset(16)] public byte PlayerId;
-        [System.Runtime.InteropServices.FieldOffset(24)] public ulong PlayerName;
+        [System.Runtime.InteropServices.FieldOffset(24)] public long PlayerName;
         [System.Runtime.InteropServices.FieldOffset(32)] public byte ColorId;
         [System.Runtime.InteropServices.FieldOffset(36)] public uint HatId;
         [System.Runtime.InteropServices.FieldOffset(40)] public uint PetId;

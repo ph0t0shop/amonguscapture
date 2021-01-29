@@ -84,13 +84,13 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Path Width="22" Height="22"  Fill="#FFD700" StrokeThickness="1">
-                                <Path.Data>
-                                    <PathGeometry>
+                            <hc:AnimationPath Width="22" Height="22" Stroke="#FFD700" PathLength="30" StrokeThickness="1" Duration="00:00:05">
+                                <hc:AnimationPath.Data>
+                                    <Geometry>
                                         M 38.0333,18.5C 39.4877,18.5 40.6667,19.679 40.6667,21.1333C 40.6667,22.5877 39.4877,23.7667 38.0333,23.7667C 36.579,23.7667 35.4,22.5877 35.4,21.1333C 35.4,19.679 36.579,18.5 38.0333,18.5 Z M 56.4666,26.4C 57.921,26.4 59.1,27.579 59.1,29.0333C 59.1,30.4877 57.921,31.6667 56.4666,31.6667C 55.0123,31.6667 53.8333,30.4877 53.8333,29.0333C 53.8333,27.579 55.0123,26.4 56.4666,26.4 Z M 19.6,26.4C 21.0543,26.4 22.2333,27.579 22.2333,29.0333C 22.2333,30.4877 21.0543,31.6667 19.6,31.6667C 18.1456,31.6667 16.9667,30.4877 16.9667,29.0333C 16.9667,27.579 18.1456,26.4 19.6,26.4 Z M 27.5,40.8833L 31.45,54.05L 44.6167,54.05L 48.5667,40.8833C 41.9833,40.8833 38.0333,34.3 38.0333,34.3C 38.0333,34.3 34.0833,40.8833 27.5,40.8833 Z M 38.0333,25.0833C 38.0333,25.0833 41.9833,46.15 55.15,32.9833L 47.25,58L 28.8167,58C 25.7444,50.1 20.9167,32.9833 20.9167,32.9833C 34.0833,46.15 38.0333,25.0833 38.0333,25.0833 Z M 32,51L 31.25,49L 44.75,49L 44,51L 32,51 Z
-                                    </PathGeometry>
-                                </Path.Data>
-                            </Path>
+                                    </Geometry>
+                                </hc:AnimationPath.Data>
+                            </hc:AnimationPath>
                         </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
@@ -199,6 +199,9 @@
                                 <mah:MetroTabItem Header="About">
                                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                                         <StackPanel Orientation="Vertical">
+                                            <mah:MetroHeader Header="Auto updater">
+                                                <CheckBox IsChecked="{Binding AutoUpdaterEnabled, Mode=OneWay}" IsEnabled="False"/>
+                                            </mah:MetroHeader>
                                             <mah:MetroHeader Header="App version:">
                                                 <TextBox VerticalAlignment="Center" MinWidth="150" IsReadOnly="True"
                                                          Text="{Binding Version, Mode=OneWay}" />
@@ -288,19 +291,19 @@
             </TextBlock>
             <hc:LoadingCircle Margin="15" IsEnabled="{Binding Connected, Converter={StaticResource BoolInverter}}" Foreground="{DynamicResource MahApps.Brushes.Accent}" Style="{StaticResource LoadingCircleLarge}" Visibility="{Binding Connected, Converter={StaticResource BoolToVisibilityConverterInverted}}" IsRunning="{Binding Connected, Converter={StaticResource BoolInverter}}"/>
 
-            <Button Padding="13" Margin="30" HorizontalAlignment="Center"
+            <Button Padding="14" Margin="30" HorizontalAlignment="Center" VerticalContentAlignment="Center"
                     Visibility="{Binding Connected, Converter={StaticResource BoolToVisibilityConverterInverted}}"
                     Command="{Binding OpenAmongUsCMD, Mode=OneWay}">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
-                        <Path Width="22" Height="22" Fill="{DynamicResource MahApps.Brushes.Text}"  StrokeThickness="1">
+                        <Path VerticalAlignment="Center" Width="22" Height="22" Fill="{DynamicResource MahApps.Brushes.Text}"  StrokeThickness="1">
                             <Path.Data>
                                 <PathGeometry>
                                     M22.60107,2.062a1.00088,1.00088,0,0,0-.71289-.71289A11.25224,11.25224,0,0,0,10.46924,4.97217L9.35431,6.296l-2.6048-.62848A2.77733,2.77733,0,0,0,3.36279,7.0249L1.1626,10.9248A.99989.99989,0,0,0,1.82422,12.394l3.07275.65869a13.41952,13.41952,0,0,0-.55517,2.43409,1.00031,1.00031,0,0,0,.28466.83642l3.1001,3.1001a.99941.99941,0,0,0,.707.293c.02881,0,.05762-.00147.08692-.00391a12.16892,12.16892,0,0,0,2.49157-.49l.64368,3.00318a1.0003,1.0003,0,0,0,1.46924.66162l3.90527-2.20264a3.03526,3.03526,0,0,0,1.375-3.30371l-.6687-2.759,1.23706-1.13751A11.20387,11.20387,0,0,0,22.60107,2.062ZM3.57227,10.72314,5.12842,7.96338a.82552.82552,0,0,1,1.06982-.37549l1.71741.4162-.65.77179A13.09523,13.09523,0,0,0,5.67633,11.174Zm12.47021,8.22217L13.32666,20.477l-.4295-2.00464a11.33992,11.33992,0,0,0,2.41339-1.61987l.74353-.68366.40344,1.66462A1.041,1.041,0,0,1,16.04248,18.94531ZM17.65674,11.98l-3.68457,3.38623a9.77348,9.77348,0,0,1-5.17041,2.3042l-2.4043-2.4043a10.932,10.932,0,0,1,2.40088-5.206l1.67834-1.99268a.9635.9635,0,0,0,.07813-.09277L11.98975,6.271a9.27757,9.27757,0,0,1,8.80957-3.12012A9.21808,9.21808,0,0,1,17.65674,11.98Zm-.923-6.16376a1.5,1.5,0,1,0,1.5,1.5A1.49992,1.49992,0,0,0,16.7337,5.81622Z
                                 </PathGeometry>
                             </Path.Data>
                         </Path>
-                        <TextBlock Margin="5 0 0 0"> Launch Among Us</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="5 0 0 5"> Launch Among Us</TextBlock>
                     </StackPanel>
 
                 </Button.Content>
@@ -332,7 +335,7 @@
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid IsItemsHost="True" Rows="3"
+                        <UniformGrid IsItemsHost="True"  Margin="3" Rows="{Binding PlayerRows}" Columns="{Binding PlayerCols}"
                                      hc:PanelElement.FluidMoveBehavior="{StaticResource BehaviorXY400}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
