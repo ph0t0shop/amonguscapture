@@ -19,6 +19,7 @@ using AUCapture_WPF.IPC;
 using AUCapture_WPF.Models;
 using Humanizer;
 using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using Application = System.Windows.Application;
 
 namespace AUCapture_WPF
@@ -30,6 +31,7 @@ namespace AUCapture_WPF
 
         public string Version { get; set; }
         public string LatestReleaseAssetURL { get; set; }
+        public string LatestReleaseAssetSignedHashURL { get; set; }
         public string LatestVersion { get; set; }
         private ICommand textBoxButtonCopyCmd;
         private ICommand textBoxButtonHelpCmd;
@@ -103,6 +105,29 @@ namespace AUCapture_WPF
                 }
             }
         };
+        private string GetAmongUsLauncherLink()
+        {
+            var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Classes\\amongus\\shell\\open\\command");
+            if (key is null)
+            {
+                return "steam://rungameid/945360";
+            }
+            else
+            {
+                var path = ((string)key.GetValue(""));
+                path = path.Substring(0, path.Length - 4).Trim().Trim('\"');
+                if (path.Contains("Epic Games"))
+                {
+                    return "com.epicgames.launcher://apps/963137e4c29d4c79a81323b8fab03a40?action=launch&silent=true";
+                }
+                else
+                {
+                    return "steam://rungameid/945360";
+                }
+
+            }
+
+        }
         public ICommand OpenAmongUsCMD => openAmongUsCMD ??= new SimpleCommand
         {
             CanExecuteDelegate = x => true,
@@ -110,15 +135,15 @@ namespace AUCapture_WPF
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    Process.Start(new ProcessStartInfo("steam://rungameid/945360") { UseShellExecute = true });
+                    Process.Start(new ProcessStartInfo(GetAmongUsLauncherLink()) { UseShellExecute = true });
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    Process.Start("xdg-open", "steam://rungameid/945360");
+                    Process.Start("xdg-open", GetAmongUsLauncherLink());
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    Process.Start("open", "steam://rungameid/945360");
+                    Process.Start("open", GetAmongUsLauncherLink());
                 }
                 else
                 {
@@ -192,6 +217,27 @@ namespace AUCapture_WPF
                 OnPropertyChanged();
             }
         }
+        private int _playerRows = 2;
+        public int PlayerRows
+        {
+            get => _playerRows;
+            set
+            {
+                _playerRows = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _playerCols = 2;
+        public int PlayerCols
+        {
+            get => _playerCols;
+            set
+            {
+                _playerCols = value;
+                OnPropertyChanged();
+            }
+        }
 
         private GameState? _gameState;
         public GameState? GameState
@@ -204,6 +250,17 @@ namespace AUCapture_WPF
             }
         }
 
+        private bool _autoUpdaterEnabled;
+
+        public bool AutoUpdaterEnabled
+        {
+            get => _autoUpdaterEnabled;
+            set
+            {
+                _autoUpdaterEnabled = value;
+                OnPropertyChanged();
+            }
+        }
         private static void Shuffle<T>(List<T> list)
         {
             Random rng = new Random(); 
@@ -247,7 +304,7 @@ namespace AUCapture_WPF
                 try
                 {
                     latest = client.Repository.Release.GetLatest("automuteus", "amonguscapture").Result;
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -255,6 +312,9 @@ namespace AUCapture_WPF
                 }
                 
                 LatestReleaseAssetURL = latest.Assets.First(x => x.Name == "AmongUsCapture.zip").BrowserDownloadUrl;
+                if (latest.Assets.Any(x => x.Name == "AmongUsCapture.zip.sha256.pgp"))
+                    LatestReleaseAssetSignedHashURL = latest.Assets.First(x => x.Name == "AmongUsCapture.zip.sha256.pgp").BrowserDownloadUrl;
+
                 LatestVersion = $"{latest.TagName}";
             }
             catch (Exception e)

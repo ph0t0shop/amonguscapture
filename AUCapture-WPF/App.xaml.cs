@@ -80,6 +80,7 @@ namespace AUCapture_WPF
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            Console.WriteLine(string.Join(", ",Assembly.GetExecutingAssembly().GetManifestResourceNames())); //Gets all the embedded resources
             var r = new Random();
             var rValue = r.Next(101);
             var goingToPop = rValue <= 3;
@@ -100,17 +101,17 @@ namespace AUCapture_WPF
             else if(goingToPop)
             {
                 new SplashScreen(Assembly.GetExecutingAssembly(), "SplashScreens\\SplashScreenPop.png").Show(true);
-                PlaySound("https://github.com/automuteus/amonguscapture/raw/master/AUCapture-WPF/SplashScreens/popcat.wav");
+                PlaySound("https://cdn.automute.us/Eggs/popcat.wav");
             }
             else if(goingToDouche)
             {
                 new SplashScreen(Assembly.GetExecutingAssembly(), "SplashScreens\\SplashScreenDouche.png").Show(true);
-                PlaySound("https://github.com/automuteus/amonguscapture/raw/master/AUCapture-WPF/SplashScreens/douchebag.wav");
+                PlaySound("https://cdn.automute.us/Eggs/douchebag.wav");
             }
             else
             {
                 new SplashScreen(Assembly.GetExecutingAssembly(), "SplashScreens\\SplashScreenMonke.png").Show(true);
-                PlaySound("https://github.com/automuteus/amonguscapture/raw/master/AUCapture-WPF/SplashScreens/stinky.wav");
+                PlaySound("https://cdn.automute.us/Eggs/stinky.wav");
             }
             
             var mainWindow = new MainWindow();

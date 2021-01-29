@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Cache;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace AUCapture_WPF.Converters
     {
         public Dictionary<string, int> Hats = new()
         {
+            {"0", 0},
             {"1", 1},
             {"2", 1},
             {"3", 1},
@@ -117,18 +119,18 @@ namespace AUCapture_WPF.Converters
             var alive = values[1] as bool? ?? false;
             if (!alive)
             {
-                return new BitmapImage();
+                return "";
             }
 
             
             if (hatID == 0)
             {
-                return new BitmapImage();
+                return "";
             }
-            var finalName = hatID + "-" + Hats[hatID.ToString()];
-            return new BitmapImage(new Uri($"https://raw.githubusercontent.com/automuteus/amonguscapture/master/AUCapture-WPF/Resources/Hats/{finalName}.png"));
+            var finalName = hatID + "-" + Hats[(hatID%95).ToString()];
+            return $"https://cdn.automute.us/Hats/{finalName}.png";
 
-            
+
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -140,6 +142,7 @@ namespace AUCapture_WPF.Converters
     {
         public Dictionary<string, int> Hats = new()
         {
+            {"0", 0},
             {"1", 1},
             {"2", 1},
             {"3", 1},
@@ -243,7 +246,7 @@ namespace AUCapture_WPF.Converters
                 return 0;
             }
 
-            if (Hats[hatID.ToString()] == 1)
+            if (Hats[(hatID%94).ToString()] == 1)
             {
                 return 1;
             }
